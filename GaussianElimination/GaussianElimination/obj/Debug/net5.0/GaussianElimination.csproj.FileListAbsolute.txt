@@ -1,0 +1,16 @@
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\bin\Debug\net5.0\GaussianElimination.exe
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\bin\Debug\net5.0\GaussianElimination.deps.json
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\bin\Debug\net5.0\GaussianElimination.runtimeconfig.json
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\bin\Debug\net5.0\GaussianElimination.runtimeconfig.dev.json
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\bin\Debug\net5.0\GaussianElimination.dll
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\bin\Debug\net5.0\GaussianElimination.pdb
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\obj\Debug\net5.0\GaussianElimination.csproj.AssemblyReference.cache
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\obj\Debug\net5.0\GaussianElimination.GeneratedMSBuildEditorConfig.editorconfig
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\obj\Debug\net5.0\GaussianElimination.AssemblyInfoInputs.cache
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\obj\Debug\net5.0\GaussianElimination.AssemblyInfo.cs
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\obj\Debug\net5.0\GaussianElimination.csproj.CoreCompileInputs.cache
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\obj\Debug\net5.0\GaussianElimination.dll
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\obj\Debug\net5.0\refint\GaussianElimination.dll
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\obj\Debug\net5.0\GaussianElimination.pdb
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\obj\Debug\net5.0\GaussianElimination.genruntimeconfig.cache
+C:\GitHub\PracticingC-\GaussianElimination\GaussianElimination\obj\Debug\net5.0\ref\GaussianElimination.dll

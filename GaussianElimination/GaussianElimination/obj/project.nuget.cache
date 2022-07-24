@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "TAFUbW/6BoMq/yOs/hodDRX17OBAv5e2x9rOfoTnTVH45j1MLYOrW5Os2KnVP1Dk+6gBH/BuMpXp1ElfN427Aw==",
+  "success": true,
+  "projectFilePath": "C:\\GitHub\\PracticingC-\\GaussianElimination\\GaussianElimination\\GaussianElimination.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\notye\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.15\\microsoft.netcore.app.host.win-x64.5.0.15.nupkg.sha512"
+  ],
+  "logs": []
+}
