@@ -27,7 +27,6 @@ namespace GaussianElimination
             float[,] b = new float[p+1,p];
             float[] s = new float[p];
             float t = 0;
-            string m;
 
             //입력 예시
             Console.Write("\n입력할 식:\n");
@@ -45,20 +44,20 @@ namespace GaussianElimination
                 Console.Write("\n식{0}\n", i+1);
                 for (int j = 0; j < p; j++)
                 {
-                    Console.Write("x{0} 입력: ", j + 1);
-                    m = Console.ReadLine();
-                    a[j,i] = float.Parse(m);
+                    Console.Write(" x{0} 입력: ", j + 1);
+                    input = Console.ReadLine();
+                    a[j,i] = float.Parse(input);
                 }
-                Console.Write("상수{0} 입력: ", i+1);
-                m = Console.ReadLine();
-                a[p, i] = float.Parse(m);
+                Console.Write(" 상수{0} 입력: ", i+1);
+                input = Console.ReadLine();
+                a[p, i] = float.Parse(input);
             }
 
             //입력한 식
             Console.Write("\n입력한 식:\n");
             for (int i = 0; i < p; i++)
             {
-                Console.Write(" ({0})x1", a[i,0]);
+                Console.Write(" ({0})x1", a[0,i]);
                 for (int j = 1; j < p; j++)
                     Console.Write(" + ({0})x{1}", a[j,i], j + 1);
                 Console.Write(" = ({0})\n", a[p,i]);
@@ -79,7 +78,7 @@ namespace GaussianElimination
                 b[i,0] = a[i,0];
             for (int i = 0; i < p-1; i++)
             {
-                t = a[i + 1, i] / a[i, i];
+                t = a[i, i+1] / a[i, i];
                 for (int j = i; j < p+1; j++)
                     b[j, i+1] = a[j, i+1] - a[j,i] * t;
             }
@@ -101,13 +100,13 @@ namespace GaussianElimination
             }
             Console.Write("\n결과:\n");
             if (t == 0)
-                Console.Write("해가 무수히 많습니다.\n\n다른 연립방정식의 ");
+                Console.Write(" 해가 무수히 많습니다.\n\n다른 연립방정식의 ");
             else if (t == 1)
-                Console.Write("해가 없습니다.\n\n다른 연립방정식의 ");
+                Console.Write(" 해가 없습니다.\n\n다른 연립방정식의 ");
             else
             {
                 for (int i = 0; i < p; i++)
-                    Console.Write("x{0} = {1}\n", i+1, s[i]);
+                    Console.Write(" x{0} = {1}\n", i+1, s[i]);
                 Console.Write("\n다른 연립방정식의 ");
             }
         }
