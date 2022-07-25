@@ -35,9 +35,7 @@ namespace GaussianElimination
             {
                 Console.Write(" ( )x1");
                 for (int j = 1; j < p; j++)
-                {
                     Console.Write(" + ( )x{0}", j + 1);
-                }
                 Console.Write(" = ( )\n");
             }
 
@@ -62,10 +60,18 @@ namespace GaussianElimination
             {
                 Console.Write(" ({0})x1", a[i,0]);
                 for (int j = 1; j < p; j++)
-                {
                     Console.Write(" + ({0})x{1}", a[j,i], j + 1);
-                }
                 Console.Write(" = ({0})\n", a[p,i]);
+            }
+
+            //식 검사
+            for (int i = 0; i < p; i++)
+                if (a[i, i] == 0)
+                    t++;
+            if (t > 0)
+            {
+                Console.Write("\n좌측 상단에서 우측 하단까지 대각선 상에 위치한 계수에 0이 들어갈 수 없습니다.\n식의 순서를 바꾸거나 다른 식을 입력하십시오.\n\n");
+                return;
             }
 
             //계산
@@ -86,10 +92,24 @@ namespace GaussianElimination
             }
 
             //결과
-            Console.Write("\n결과:\n");
             for (int i = 0; i < p; i++)
-                Console.Write("x{0} = {1}\n", i+1, s[i]);
-            Console.Write("\n다른 연립방정식의 ");
+            {
+                if (float.IsNaN(s[i]))
+                    t = 0;
+                else if (float.IsInfinity(s[i]))
+                    t= 1;
+            }
+            Console.Write("\n결과:\n");
+            if (t == 0)
+                Console.Write("해가 무수히 많습니다.\n\n다른 연립방정식의 ");
+            else if (t == 1)
+                Console.Write("해가 없습니다.\n\n다른 연립방정식의 ");
+            else
+            {
+                for (int i = 0; i < p; i++)
+                    Console.Write("x{0} = {1}\n", i+1, s[i]);
+                Console.Write("\n다른 연립방정식의 ");
+            }
         }
     }
 }
