@@ -10,78 +10,103 @@ namespace IntegralCalculator
         {
             int[] sign = new int[2];
             int[,] index = new int[sign.Length,len];
-            string copy;
-            for (short i = 0; i < sign.Length; i++)
-                sign[i] = -1;
+            //string copy;
 
-            //입력
-            Console.WriteLine("더하기 +\t빼기 -\t곱하기 *\t나누기 /");
-            Console.WriteLine("괄호 ( )");
-            input = Console.ReadLine();
-            input = input.Trim();
-            copy = input;
-            for (int i = 0; i < len; i++)
-                index[0,i] = input.Length;
-
-            //인식
-            for (int i = 0; i < input.Length; i++)
+            Help();
+            while (true)
             {
-                switch (input[i])
+                //입력
+                Console.Write(">> ");
+                input = Console.ReadLine();
+                input = input.Trim();
+                input = input.ToLower();
+
+                //명령어
+                input = input.Trim();
+                if (input == "gg")
+                    break;
+                else if (input == "help")
                 {
-                    case '(':
-                        sign[0]++;
-                        index[0, sign[0]] = i;
-                        break;
-                    case ')':
-                        sign[1]++;
-                        index[1, sign[1]] = i;
-                        break;
-                    default:
-                        break;
+                    Help();
+                    continue;
                 }
+
+                //가공
+                //copy = input;
+                input = input + ' ';
+                for (short i = 0; i < sign.Length; i++)
+                    sign[i] = -1;
+                for (int i = 0; i < len; i++)
+                    index[0,i] = input.Length;
+                for (int i = 0; i < len; i++)
+                    index[1, i] = -1;
+
+                //인식
+                for (int i = 0; i < input.Length; i++)
+                {
+                    switch (input[i])
+                    {
+                        case '(':
+                            sign[0]++;
+                            index[0, sign[0]] = i;
+                            break;
+                        case ')':
+                            sign[1]++;
+                            index[1, sign[1]] = i;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                //괄호 계산
+                if (sign[1] > -1)
+                    OpenClose(index);
+
+                //전체 계산
+                Calculate(0, input.Length-1);
+                Console.WriteLine("값: {0}\n\n",input);
             }
-
-            //괄호 계산
-            if (sign[1] > -1)
-                OpenClose(index);
-
-            //전체 계산
-            //Console.WriteLine("전체 계산 시작");
-            //Calculate(0, input.Length-1);
-            Console.WriteLine(input);
         }
         static private void OpenClose(int[,] arr)
         {
             int[,] index = arr;
             for (int i = 0; i < len; i++)
             {
-                for (int j = 0; j < len; j++)
+                if (index[1, i] > -1)
                 {
-                    if (index[0, j] > index[1, i])
+                    for (int j = 0; j < len; j++)
                     {
-                        Calculate(index[0, j - 1], index[1, i]);
-                        index[0, j - 1] = -1;
-                        break;
+                        if (index[0, j] > index[1, i])
+                        {
+                            Calculate(index[0, j - 1], index[1, i]);
+                            index[0, j - 1] = -1;
+                            break;
+                        }
                     }
                 }
+                else
+                    break;
             }
         }
         static private void Calculate(int a,int b)
         {
-            double[] num = new double[len];
+            double[] num = new double[len+1];
             char[] sign = new char[len];
             int index = 0;
             double[] temp = new double[2];
             for (int i = 0; i < sign.Length; i++)
                 sign[i] = ' ';
-            Console.WriteLine("계산 함수 진입");
 
             //인식
-            for (int i = a; i < b; i++)
+            for (int i = a; i <= b; i++)
             {
                 switch (input[i])
                 {
                     case '(':
+                        index--;
+                        break;
+                    case ')':
                         index--;
                         break;
                     case ' ':
@@ -105,6 +130,12 @@ namespace IntegralCalculator
                     case '/':
                         sign[index] = '/';
                         break;
+                    case '^':
+                        sign[index] = '^';
+                        break;
+                    case '!':
+                        sign[index] = '!';
+                        break;
                     default:
                         temp = NumIdentfy(i);
                         num[index] = temp[0];
@@ -113,21 +144,51 @@ namespace IntegralCalculator
                 }
                 index++;
             }
-            //테스트 출력
-            for (int i = 0; i < sign.Length; i++)
-                Console.Write("{0} ", sign[i]);
-            Console.Write("\n");
-            for (int i = 0; i < num.Length; i++)
-                Console.Write("{0} ", num[i]);
-            Console.Write("\n\n");
+
+            //팩토리얼
+            for (int i = 1; i < len; i = i + 2)
+            {
+                if (sign[i] == '!')
+                {
+                    for (int k = (int)(num[i-1] - 1); k > 1; k--)
+                        num[i - 1] = num[i - 1] * k;
+                    for (int j = i + 1; j < len; j = j + 2)
+                    {
+                        sign[j - 1] = sign[j];
+                        sign[j] = ' ';
+                        num[j] = num[j + 1];
+                    }
+                    i -= 2;
+                }
+                else if (sign[i] == ' ')
+                    break;
+            }
+
+            //거듭제곱
+            for (int i = 1; i < len; i = i + 2)
+            {
+                if (sign[i] == '^')
+                {
+                    num[i - 1] = Math.Pow(num[i - 1],num[i + 1]);
+                    for (int j = i + 2; j < len; j = j + 2)
+                    {
+                        sign[j - 2] = sign[j];
+                        sign[j] = ' ';
+                        num[j - 1] = num[j + 1];
+                    }
+                    i -= 2;
+                }
+                else if (sign[i] == ' ')
+                    break;
+            }
 
             //곱하기, 나누기
-            for (int i = 1; i < sign.Length; i=i+2)
+            for (int i = 1; i < len; i=i+2)
             {
                 if (sign[i] == '*')
                 {
                     num[i - 1] = num[i - 1] * num[i + 1];
-                    for (int j = i + 2; j < sign.Length; j = j + 2)
+                    for (int j = i + 2; j < len; j = j + 2)
                     {
                         sign[j - 2] = sign[j];
                         sign[j] = ' ';
@@ -138,7 +199,7 @@ namespace IntegralCalculator
                 else if (sign[i] == '/')
                 {
                     num[i - 1] = num[i - 1] / num[i + 1];
-                    for (int j = i + 2; j < sign.Length; j = j + 2)
+                    for (int j = i + 2; j < len; j = j + 2)
                     {
                         sign[j - 2] = sign[j];
                         sign[j] = ' ';
@@ -148,13 +209,6 @@ namespace IntegralCalculator
                 }
                 else if (sign[i] == ' ')
                     break;
-                //테스트 출력
-                for (int j = 0; j < sign.Length; j++)
-                    Console.Write("{0} ", sign[j]);
-                Console.Write("\n");
-                for (int j = 0; j < num.Length; j++)
-                    Console.Write("{0} ", num[j]);
-                Console.Write("\n\n");
             }
 
             //더하기, 빼기
@@ -163,7 +217,7 @@ namespace IntegralCalculator
                 if (sign[1] == '+')
                 {
                     num[0] = num[0] + num[2];
-                    for (int j = 3; j < sign.Length; j = j + 2)
+                    for (int j = 3; j < len; j = j + 2)
                     {
                         sign[j - 2] = sign[j];
                         sign[j] = ' ';
@@ -173,7 +227,7 @@ namespace IntegralCalculator
                 else if (sign[1] == '-')
                 {
                     num[0] = num[0] - num[2];
-                    for (int j = 3; j < sign.Length; j = j + 2)
+                    for (int j = 3; j < len; j = j + 2)
                     {
                         sign[j - 2] = sign[j];
                         sign[j] = ' ';
@@ -182,22 +236,11 @@ namespace IntegralCalculator
                 }
                 else
                     break;
-                //테스트 출력
-                for (int j = 0; j < sign.Length; j++)
-                    Console.Write("{0} ", sign[j]);
-                Console.Write("\n");
-                for (int j = 0; j < num.Length; j++)
-                    Console.Write("{0} ", num[j]);
-                Console.Write("\n\n");
             }
 
             //결과
-            input.Remove(a,b);
-            Console.WriteLine(input);
-            input.Insert(a,num[0].ToString());
-            Console.WriteLine(num[0]);
-            Console.WriteLine("계산 끝");
-            Console.WriteLine(input);
+            input = input.Remove(a,b-a+1);
+            input = input.Insert(a,num[0].ToString());
         }
         static private double[] NumIdentfy(int n)
         {
@@ -300,6 +343,13 @@ namespace IntegralCalculator
             result[0] = num;
             result[1] = n-2;
             return result;
+        }
+        static private void Help()
+        {
+            Console.WriteLine("더하기 +\t빼기 -\t\t곱하기 *\t나누기 /");
+            Console.WriteLine("거듭제곱 ^\t팩토리얼 !");
+            Console.WriteLine("괄호 ( )");
+            Console.WriteLine("프로그램 종료 gg\t도움말 help\n");
         }
     }
 }
