@@ -1,0 +1,16 @@
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\obj\Debug\net5.0\IntegralCalculator.csproj.AssemblyReference.cache
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\obj\Debug\net5.0\IntegralCalculator.GeneratedMSBuildEditorConfig.editorconfig
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\obj\Debug\net5.0\IntegralCalculator.AssemblyInfoInputs.cache
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\obj\Debug\net5.0\IntegralCalculator.AssemblyInfo.cs
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\obj\Debug\net5.0\IntegralCalculator.csproj.CoreCompileInputs.cache
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\bin\Debug\net5.0\IntegralCalculator.exe
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\bin\Debug\net5.0\IntegralCalculator.deps.json
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\bin\Debug\net5.0\IntegralCalculator.runtimeconfig.json
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\bin\Debug\net5.0\IntegralCalculator.runtimeconfig.dev.json
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\bin\Debug\net5.0\IntegralCalculator.dll
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\bin\Debug\net5.0\IntegralCalculator.pdb
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\obj\Debug\net5.0\IntegralCalculator.dll
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\obj\Debug\net5.0\refint\IntegralCalculator.dll
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\obj\Debug\net5.0\IntegralCalculator.pdb
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\obj\Debug\net5.0\IntegralCalculator.genruntimeconfig.cache
+C:\GitHub\PracticingC-\IntegralCalculator\IntegralCalculator\obj\Debug\net5.0\ref\IntegralCalculator.dll
