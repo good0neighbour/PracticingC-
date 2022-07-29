@@ -6,6 +6,8 @@ namespace IntegralCalculator
     {
         private static string input;
         private static short len = 31;
+        private static string[,] func = {{ "sin", "cos", "tan", "asin", "acos", "atan", "sinh", "cosh", "tanh", "sqrt", "log" },
+            { "A" , "B" , "C", "D", "E" , "F" , "G" , "H" , "I" , "J" , "K" } };
         static void Main(string[] args)
         {
             int[] sign = new int[2];
@@ -39,7 +41,7 @@ namespace IntegralCalculator
                 {
                     Console.WriteLine("1 이상 자연수 입력. 숫자가 클 수록 높은 정확도, 낮은 성능. (기본값: 100000)");
                     n = Math.Abs(int.Parse(Console.ReadLine()));
-                    Console.WriteLine("적분 정확도 {0}로 변경\n", n);
+                    Console.WriteLine("적분 정확도 {0}(으)로 변경\n", n);
                     continue;
                 }
 
@@ -53,6 +55,7 @@ namespace IntegralCalculator
                 }
 
                 //가공
+                FuncDetect();
                 for (int i = 0; i < input.Length; i++)
                 {
                     switch (input[i])
@@ -85,7 +88,7 @@ namespace IntegralCalculator
                 }
                 input = input + ' ';
                 copy = input;
-
+                
                 //범위 입력
                 Console.Write("x1 =  ");
                 x[0] = double.Parse(Console.ReadLine());
@@ -115,10 +118,17 @@ namespace IntegralCalculator
                     //x변화량 곱
                     result += double.Parse(input) * x[2];
                 }
-
                 //출력
                 result = Math.Round(result * 100) / 100;
                 Console.WriteLine("값: {0}\n",result);
+            }
+        }
+        static private void FuncDetect()
+        {
+            for (short i = 0; i < func.GetLength(1); i++)
+            {
+                while (input.Contains(func[0,i]))
+                    input = input.Replace(func[0,i], func[1, i]);
             }
         }
         static private void OpenClose(int[,] arr)
@@ -195,6 +205,50 @@ namespace IntegralCalculator
                         sign[index] = '!';
                         index++;
                         break;
+                    case 'A':
+                        sign[index] = 'A';
+                        index++;
+                        break;
+                    case 'B':
+                        sign[index] = 'B';
+                        index++;
+                        break;
+                    case 'C':
+                        sign[index] = 'C';
+                        index++;
+                        break;
+                    case 'D':
+                        sign[index] = 'D';
+                        index++;
+                        break;
+                    case 'E':
+                        sign[index] = 'E';
+                        index++;
+                        break;
+                    case 'F':
+                        sign[index] = 'F';
+                        index++;
+                        break;
+                    case 'G':
+                        sign[index] = 'G';
+                        index++;
+                        break;
+                    case 'H':
+                        sign[index] = 'H';
+                        index++;
+                        break;
+                    case 'I':
+                        sign[index] = 'I';
+                        index++;
+                        break;
+                    case 'J':
+                        sign[index] = 'J';
+                        index++;
+                        break;
+                    case 'K':
+                        sign[index] = 'K';
+                        index++;
+                        break;
                     default:
                         temp = NumIdentfy(i);
                         num[index] = temp[0];
@@ -206,10 +260,139 @@ namespace IntegralCalculator
                 }
             }
             //TestPrint(sign, num, isNum);
+            
+            //Sin
+            for (int i = 0; i < len; i++)
+            {
+                if (sign[i] == 'A')
+                {
+                    num[i + 1] = Math.Sin(num[i + 1]);
+                    sign = Rearrange(sign, i, 1);
+                    num = Rearrange(num, i, 1);
+                    isNum = Rearrange(isNum, i, 1);
+                    //TestPrint(sign, num, isNum);
+                }
+            }
 
+            //Cos
+            for (int i = 0; i < len; i++)
+            {
+                if (sign[i] == 'B')
+                {
+                    num[i + 1] = Math.Cos(num[i + 1]);
+                    sign = Rearrange(sign, i, 1);
+                    num = Rearrange(num, i, 1);
+                    isNum = Rearrange(isNum, i, 1);
+                    //TestPrint(sign, num, isNum);
+                }
+            }
+
+            //Tan
+            for (int i = 0; i < len; i++)
+            {
+                if (sign[i] == 'C')
+                {
+                    num[i + 1] = Math.Tan(num[i + 1]);
+                    sign = Rearrange(sign, i, 1);
+                    num = Rearrange(num, i, 1);
+                    isNum = Rearrange(isNum, i, 1);
+                    //TestPrint(sign, num, isNum);
+                }
+            }
+
+            //Asin
+            for (int i = 0; i < len; i++)
+            {
+                if (sign[i] == 'D')
+                {
+                    num[i + 1] = Math.Asin(num[i + 1]);
+                    sign = Rearrange(sign, i, 1);
+                    num = Rearrange(num, i, 1);
+                    isNum = Rearrange(isNum, i, 1);
+                    //TestPrint(sign, num, isNum);
+                }
+            }
+
+            //Acos
+            for (int i = 0; i < len; i++)
+            {
+                if (sign[i] == 'E')
+                {
+                    num[i + 1] = Math.Acos(num[i + 1]);
+                    sign = Rearrange(sign, i, 1);
+                    num = Rearrange(num, i, 1);
+                    isNum = Rearrange(isNum, i, 1);
+                    //TestPrint(sign, num, isNum);
+                }
+            }
+
+            //Atan
+            for (int i = 0; i < len; i++)
+            {
+                if (sign[i] == 'F')
+                {
+                    num[i + 1] = Math.Atan(num[i + 1]);
+                    sign = Rearrange(sign, i, 1);
+                    num = Rearrange(num, i, 1);
+                    isNum = Rearrange(isNum, i, 1);
+                    //TestPrint(sign, num, isNum);
+                }
+            }
+
+            //Sinh
+            for (int i = 0; i < len; i++)
+            {
+                if (sign[i] == 'G')
+                {
+                    num[i + 1] = Math.Sinh(num[i + 1]);
+                    sign = Rearrange(sign, i, 1);
+                    num = Rearrange(num, i, 1);
+                    isNum = Rearrange(isNum, i, 1);
+                    //TestPrint(sign, num, isNum);
+                }
+            }
+
+            //Cosh
+            for (int i = 0; i < len; i++)
+            {
+                if (sign[i] == 'H')
+                {
+                    num[i + 1] = Math.Cosh(num[i + 1]);
+                    sign = Rearrange(sign, i, 1);
+                    num = Rearrange(num, i, 1);
+                    isNum = Rearrange(isNum, i, 1);
+                    //TestPrint(sign, num, isNum);
+                }
+            }
+
+            //Tanh
+            for (int i = 0; i < len; i++)
+            {
+                if (sign[i] == 'I')
+                {
+                    num[i + 1] = Math.Tanh(num[i + 1]);
+                    sign = Rearrange(sign, i, 1);
+                    num = Rearrange(num, i, 1);
+                    isNum = Rearrange(isNum, i, 1);
+                    //TestPrint(sign, num, isNum);
+                }
+            }
+
+            //Sqrt
+            for (int i = 0; i < len; i++)
+            {
+                if (sign[i] == 'J')
+                {
+                    num[i + 1] = Math.Sqrt(num[i + 1]);
+                    sign = Rearrange(sign, i, 1);
+                    num = Rearrange(num, i, 1);
+                    isNum = Rearrange(isNum, i, 1);
+                    //TestPrint(sign, num, isNum);
+                }
+            }
 
             //팩토리얼
-            for (int i = 1; i < len; i = i + 2)
+            for (int i = 1; i < len; i++)
             {
                 if (sign[i] == '!')
                 {
@@ -218,11 +401,9 @@ namespace IntegralCalculator
                     sign = Rearrange(sign, i, 1);
                     num = Rearrange(num, i, 1);
                     isNum = Rearrange(isNum, i, 1);
-                    i -= 2;
+                    i--;
                     //TestPrint(sign, num, isNum);
                 }
-                else if (sign[i] == ' ')
-                    break;
             }
 
             //거듭제곱
@@ -242,7 +423,7 @@ namespace IntegralCalculator
             }
 
             //곱하기, 나누기
-            for (int i = 1; i < len; i=i+2)
+            for (int i = 1; i < len; i = i + 2)
             {
                 if (sign[i] == '*')
                 {
@@ -592,8 +773,12 @@ namespace IntegralCalculator
         {
             Console.WriteLine("더하기 +\t빼기 -\t\t곱하기 *\t나누기 /");
             Console.WriteLine("거듭제곱 ^\t팩토리얼 !");
-            Console.WriteLine("괄호 ( )");
-            Console.WriteLine("띄어쓰기 가능\t자리수 구분(,) 가능\tTap 가능\t이외의 모든 문자 무시");
+            Console.WriteLine("sin sin()\tcos cos()\ttan tan()");
+            Console.WriteLine("sinh sinh()\tcosh cosh()\ttanh tanh()");
+            Console.WriteLine("arcsin asin()\tarccos acos()\tarctan atan()");
+            Console.WriteLine("제곱근 sqrt()\t괄호 ( )");
+            Console.WriteLine("미지수 x만 사용 가능");
+            Console.WriteLine("띄어쓰기 가능\t자리수 구분(,) 가능\tTab 가능\t이외의 모든 문자 무시");
             Console.WriteLine("연산 기호 없이 두 수가 이웃할 경우 곱하기 기호 생략으로 간주");
             Console.WriteLine("숫자 사이 자리수 구분 기호(,)가 아닌 다른 특수문자가 올 경우 양 옆 수를 분리된 수로 간주");
             Console.WriteLine("프로그램 종료 gg\t도움말 help\t적분 정확도 변경 n\n");
