@@ -82,6 +82,7 @@ namespace IntegralCalculator
                 }
 
                 //괄호 변수 초기 값
+                sign[0] = -1; sign[1] = -1;
                 index = OCInitialize(index);
 
                 //가공
@@ -167,21 +168,21 @@ namespace IntegralCalculator
         }
         static private void OpenClose(int[,] index)
         {
-            bool[] a = new bool[index.GetLength(1)];
-            for (short i = 0; i < a.Length; i++)
+            int[,] arr = new int[index.GetLength(0), index.GetLength(1)];
+            for (short i = 0; i < arr.GetLength(0); i++)
             {
-                a[i] = true;
+                for (int j = 0; j < arr.GetLength(1); j++)
+                    arr[i, j] = index[i, j];
             }
-            index = OCIndex(index);
             //TestPrint2(index);
             for (short i = 0; i < len; i++)
             {
-                if (index[0, i] > index[1, 0])
+                if (arr[0, i] > arr[1, 0])
                 {
-                    Calculate(index[0, i - 1], index[1, 0]);
-                    if (index[1, 1] > -1)
+                    Calculate(arr[0, i - 1], arr[1, 0]);
+                    if (arr[1, 1] > -1)
                     {
-                        index = OCIndex(index);
+                        arr = OCIndex(arr);
                         i = -1;
                     }
                     else
@@ -726,7 +727,7 @@ namespace IntegralCalculator
             }
             if (d > 0)
             {
-                num += numD / Math.Pow(10,d);
+                num += numD * Math.Pow(10, -d);
             }
             result[0] = num;
             if (noNum)
