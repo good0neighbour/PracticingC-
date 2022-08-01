@@ -138,12 +138,11 @@ namespace IntegralCalculator
                     k = Math.Round(x[0] + x[2] * i + x[2] / 2, nn + 3);
 
                     //괄호 계산
-                    //TestPrint2(index);
                     if (sign[1] > -1)
                         OpenClose(index);
 
                     //전체 계산
-                    Calculate(0, input.Length-2);
+                    Calculate(0, input.Length - 2);
                     input = input.Trim();
 
                     //x변화량 곱
@@ -173,8 +172,8 @@ namespace IntegralCalculator
             {
                 a[i] = true;
             }
-            //TestPrint2(index);
             index = OCIndex(index);
+            //TestPrint2(index);
             for (short i = 0; i < len; i++)
             {
                 if (index[0, i] > index[1, 0])
@@ -182,7 +181,7 @@ namespace IntegralCalculator
                     Calculate(index[0, i - 1], index[1, 0]);
                     if (index[1, 1] > -1)
                     {
-                        //index = OCIndex(index);
+                        index = OCIndex(index);
                         i = -1;
                     }
                     else
@@ -606,7 +605,7 @@ namespace IntegralCalculator
             bool noNum = true;
             short d = 0;
             double num = 0;
-            double numD = 0;
+            long numD = 0;
             double[] result = new double[3];
             while (c)
             {
