@@ -5,23 +5,28 @@ namespace IntegralCalculator
     internal class Program
     {
         private static string input;
-        private static short len = 31;
+        private static short len = 32;
         private static string[,] func =
         {
             { "sin", "cos", "tan", "asin", "acos", "atan", "sinh", "cosh", "tanh", "sqrt", "log" , "ln" , "pi" , "e" },
             { "A" ,  "B" ,  "C" ,  "D" ,   "E" ,   "F" ,   "G" ,   "H" ,   "I" ,   "J" ,   "K" ,   "L" ,  "" ,   "" }
         };
         private static double k = 0;
+        private static double[] number = new double[0];
+        private static char[] operate = new char[0];
+        private static bool[] isNumG = new bool[0];
+        private static int[,] opcl = new int[0, 0];
         static void Main(string[] args)
         {
-            int[] sign = { -1, -1 };
-            int[,] index = new int[sign.Length,len];
             int n = 1000000;
-            int nn = (short)MathF.Floor(MathF.Log10(n));
+            short nn = (short)MathF.Floor(MathF.Log10(n));
             int m = 10;
             double[] x = new double[3];
             double result = 0;
-            string copy;
+            double[] numberC;
+            char[] operateC;
+            bool[] isNumC;
+            int[,] opclC;
             func[1, 12] = Math.PI.ToString();
             func[1, 13] = Math.E.ToString();
 
@@ -35,7 +40,6 @@ namespace IntegralCalculator
                 input = input.ToLower();
 
                 //명령어
-                input = input.Trim();
                 if (input == "gg")
                 {
                     return;
@@ -56,7 +60,7 @@ namespace IntegralCalculator
                         Console.WriteLine("다시 입력");
                         goto ReadE;
                     }
-                    nn = (int)MathF.Floor(MathF.Log10(n));
+                    nn = (short)MathF.Floor(MathF.Log10(n));
                     if (nn < 1)
                         nn = 1;
                     
@@ -81,47 +85,29 @@ namespace IntegralCalculator
                     continue;
                 }
 
-                //괄호 변수 초기 값
-                sign[0] = -1; sign[1] = -1;
-                index = OCInitialize(index);
-
                 //가공
                 FuncDetect();
-                for (int i = 0; i < input.Length; i++)
+                FxParse();
+                numberC = new double[number.Length];
+                operateC = new char[operate.Length];
+                isNumC = new bool[isNumG.Length];
+                opclC = new int[2, opcl.GetLength(1)];
+                for (short i = 0; i < number.Length; i++)
                 {
-                    switch (input[i])
-                    {
-                        case '(':
-                            if (MultiplyMissed(i, "left"))
-                            {
-                                input = input.Insert(i, "*");
-                                i++;
-                            }
-                            sign[0]++;
-                            index[0, sign[0]] = i;
-                            break;
-                        case ')':
-                            if (MultiplyMissed(i, "right"))
-                                input = input.Insert(i + 1, "*");
-                            sign[1]++;
-                            index[1, sign[1]] = i;
-                            break;
-                        case 'x':
-                            if (MultiplyMissed(i, "left"))
-                            {
-                                input = input.Insert(i, "*");
-                                i++;
-                            }
-                            if (MultiplyMissed(i, "Right"))
-                                input = input.Insert(i, "*");
-                            break;
-                        default:
-                            break;
-                    }
+                    numberC[i] = number[i];
+                    operateC[i] = operate[i];
+                    isNumC[i] = isNumG[i];
                 }
-                input = input + ' ';
-                copy = input;
+                if (opcl[0, 0] != -1)
+                {
+                    for (int i = 0; i < opcl.GetLength(1); i++)
+                    {
+                        opclC[0, i] = opcl[0, i];
+                        opclC[1, i] = opcl[1, i];
+                    }
 
+                }
+                
                 //범위 입력
                 Console.Write("x1 =  ");
                 x[0] = NumFilter(Console.ReadLine());
@@ -135,21 +121,32 @@ namespace IntegralCalculator
                 //적분 계산
                 for (int i = 0; i < n; i++)
                 {
-                    input = copy;
+                    for (int j = 0; j < numberC.Length; j++)
+                    {
+                        number[j] = numberC[j];
+                        operate[j] = operateC[j];
+                        isNumG[j] = isNumC[j];
+                    }
                     k = Math.Round(x[0] + x[2] * i + x[2] / 2, nn + 3);
 
                     //괄호 계산
-                    if (sign[1] > -1)
-                        OpenClose(index);
+                    if (opcl[0, 0] != -1)
+                    {
+                        for (int j = 0; j < opcl.GetLength(1); j++)
+                        {
+                            opclC[0, j] = opcl[0, j];
+                            opclC[1, j] = opcl[1, j];
+                        }
+                        OpenClose();
+                    }
 
                     //전체 계산
-                    Calculate(0, input.Length - 2);
-                    input = input.Trim();
+                    Calculate(0, number.Length - 1);
 
                     //x변화량 곱
-                    result += double.Parse(input) * x[2];
-                    if ((i + 1) % (n / m) == 0)
-                        Console.WriteLine(" x_{0}% = {1}\t\tf(x_{0}%) = {2}\t\t현재 값: {3}", MathF.Round((i + 1) / (float)n * 100), k, input, Math.Round(result, nn - 1));
+                    result += number[0] * x[2];
+                    if (m > 0 && (i + 1) % (n / m) == 0)
+                        Console.WriteLine(" x_{0}% = {1}\t\tf(x_{0}%) = {2}\t\t현재 값: {3}", MathF.Round((i + 1) / (float)n * 100), k, number[0], Math.Round(result, nn - 1));
                 }
 
                 //출력
@@ -166,91 +163,80 @@ namespace IntegralCalculator
                     input = input.Replace(func[0,i], func[1, i]);
             }
         }
-        static private void OpenClose(int[,] index)
+        static private void FxParse()
         {
-            int[,] arr = new int[index.GetLength(0), index.GetLength(1)];
-            for (short i = 0; i < arr.GetLength(0); i++)
-            {
-                for (int j = 0; j < arr.GetLength(1); j++)
-                    arr[i, j] = index[i, j];
-            }
-            //TestPrint2(index);
-            for (short i = 0; i < len; i++)
-            {
-                if (arr[0, i] > arr[1, 0])
-                {
-                    Calculate(arr[0, i - 1], arr[1, 0]);
-                    if (arr[1, 1] > -1)
-                    {
-                        arr = OCIndex(arr);
-                        i = -1;
-                    }
-                    else
-                        return;
-                }
-            }
-        }
-        static private int[,] OCIndex(int[,] index)
-        {
-            int[] a = { 0, 0 };
-            index = OCInitialize(index);
-            for (short i = 0; i < input.Length; i++)
-            {
-                switch (input[i])
-                {
-                    case '(':
-                        index[0, a[0]] = i;
-                        a[0]++;
-                        break;
-                    case ')':
-                        index[1, a[1]] = i;
-                        a[1]++;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            return index;
-        }
-        static private int[,] OCInitialize(int[,] index)
-        {
-            for (short i = 0; i < len; i++)
-            {
-                index[0, i] = int.MaxValue;
-                index[1, i] = -1;
-            }
-            return index;
-        }
-        static private void Calculate(int a,int b)
-        {
-            double[] num = new double[len+1];
+            double[] num = new double[len];
             double[] temp = new double[3];
+            int[,] oc = new int[2, len];
             char[] sign = new char[len];
-            bool[] isNum = new bool[len+1];
+            bool[] isNum = new bool[len];
             short index = 0;
+            short[] ocIndex = { -1, -1 };
             for (short i = 0; i < sign.Length; i++)
             {
                 sign[i] = ' ';
                 isNum[i] = false;
             }
-            isNum[len] = false;
+            isNum[isNum.Length - 1] = false;
+            oc[0, 0] = -1;
 
-            //인식
-            for (int i = a; i <= b; i++)
+            //가공
+            for (int i = 0; i < input.Length; i++)
             {
-                //Console.WriteLine("a = {0} b = {1}", a, b);
-                //Console.WriteLine("Length = {0}", input.Length);
                 switch (input[i])
                 {
                     case '(':
+                        if (MultiplyMissed(i, "left"))
+                        {
+                            input = input.Insert(i, "*");
+                            i++;
+                        }
                         break;
                     case ')':
+                        if (MultiplyMissed(i, "right"))
+                            input = input.Insert(i + 1, "*");
                         break;
+                    case 'x':
+                        if (MultiplyMissed(i, "left"))
+                        {
+                            input = input.Insert(i, "*");
+                            i++;
+                        }
+                        if (MultiplyMissed(i, "Right"))
+                            input = input.Insert(i, "*");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            input = input + ' ';
+
+            //인식
+            for (int i = 0; i < input.Length; i++)
+            {
+                switch (input[i])
+                {
                     case ' ':
                         break;
                     case ',':
                         break;
                     case '\t':
+                        break;
+                    case '(':
+                        sign[index] = '(';
+                        index++;
+                        ocIndex[0]++;
+                        oc[0, ocIndex[0]] = index;
+                        break;
+                    case ')':
+                        if (oc[0, 0] != -1)
+                        {
+                            sign[index] = ')';
+                            index++;
+                            ocIndex[1]++;
+                            oc[1, ocIndex[1]] = index;
+                            oc[1, ocIndex[1] + 1] = -1;
+                        }
                         break;
                     case '+':
                         sign[index] = '+';
@@ -320,8 +306,12 @@ namespace IntegralCalculator
                         sign[index] = 'K';
                         index++;
                         break;
+                    case 'L':
+                        sign[index] = 'L';
+                        index++;
+                        break;
                     case 'x':
-                        num[index] = k;
+                        sign[index] = 'x';
                         isNum[index] = true;
                         index++;
                         break;
@@ -337,10 +327,98 @@ namespace IntegralCalculator
                         break;
                 }
             }
+
+            //반환
+            number = new double[index];
+            operate = new char[index];
+            isNumG = new bool[index];
+            for (int i = 0; i < index; i++)
+            {
+                number[i] = num[i];
+                operate[i] = sign[i];
+                isNumG[i] = isNum[i];
+            }
+            if (ocIndex[0] > -1)
+            {
+                opcl = new int[2, ocIndex[0] + 1];
+                for (int i = 0; i < 2; i++)
+                {
+                    for (int j = 0; j < ocIndex[0]; j++)
+                        opcl[i, j] = oc[i, j];
+                }
+                opcl[0, ocIndex[0]] = int.MaxValue;
+                opcl[1, ocIndex[0]] = -1;
+            }
+            else
+                opcl = new int[2, 1] { { -1 }, { -1 } };
+            //TestPrint(operate, number, isNumG);
+            //TestPrint2(opcl);
+        }
+        static private void OpenClose()
+        {
+            //Console.WriteLine("괄호 계산 진입");
+            int[,] arr = new int[opcl.GetLength(0), opcl.GetLength(1)];
+            for (short i = 0; i < arr.GetLength(0); i++)
+            {
+                for (int j = 0; j < arr.GetLength(1); j++)
+                    arr[i, j] = opcl[i, j];
+            }
+            //TestPrint2(index);
+            for (short i = 0; i < arr.Length; i++)
+            {
+                if (arr[0, i] > arr[1, 0])
+                {
+                    Calculate(arr[0, i - 1], arr[1, 0]);
+                    if (arr[1, 1] > -1)
+                    {
+                        Rearrange(arr, i);
+                        i = -1;
+                    }
+                    else
+                        return;
+                }
+            }
+        }
+        static private void Calculate(int a, int b)
+        {
+            //Console.WriteLine("a = {0} b = {1}", a, b);
+            //Console.WriteLine("length = {0}", number.Length);
+            int n = b - a + 1;
+            double[] num = new double[n];
+            char[] sign = new char[n];
+            bool[] isNum = new bool[n];
+            for (int i = a; i <= b; i++)
+            {
+                //Console.WriteLine("i = {0}", i);
+                num[i - a] = number[i];
+                sign[i - a] = operate[i];
+                isNum[i - a] = isNumG[i];
+            }
             //TestPrint(sign, num, isNum);
-            
+
+            //괄호 제거
+            if (sign[0] == '(')
+            {
+                sign[sign.Length - 1] = ')';
+                sign = Rearrange(sign, 0, 1);
+                num = Rearrange(num, 0, 1);
+                isNum = Rearrange(isNum, 0, 1);
+                //TestPrint(sign, num, isNum);
+            }
+
+            //x 대입
+            for (short i = 0; i < sign.Length; i++)
+            {
+                if (sign[i] == 'x')
+                {
+                    num[i] = k;
+                    sign[i] = ' ';
+                    //TestPrint(sign, num, isNum);
+                }
+            }
+
             //Sin
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < sign.Length; i++)
             {
                 if (sign[i] == 'A')
                 {
@@ -353,7 +431,7 @@ namespace IntegralCalculator
             }
 
             //Cos
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < sign.Length; i++)
             {
                 if (sign[i] == 'B')
                 {
@@ -366,7 +444,7 @@ namespace IntegralCalculator
             }
 
             //Tan
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < sign.Length; i++)
             {
                 if (sign[i] == 'C')
                 {
@@ -379,7 +457,7 @@ namespace IntegralCalculator
             }
 
             //Asin
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < sign.Length; i++)
             {
                 if (sign[i] == 'D')
                 {
@@ -392,7 +470,7 @@ namespace IntegralCalculator
             }
 
             //Acos
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < sign.Length; i++)
             {
                 if (sign[i] == 'E')
                 {
@@ -405,7 +483,7 @@ namespace IntegralCalculator
             }
 
             //Atan
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < sign.Length; i++)
             {
                 if (sign[i] == 'F')
                 {
@@ -418,7 +496,7 @@ namespace IntegralCalculator
             }
 
             //Sinh
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < sign.Length; i++)
             {
                 if (sign[i] == 'G')
                 {
@@ -431,7 +509,7 @@ namespace IntegralCalculator
             }
 
             //Cosh
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < sign.Length; i++)
             {
                 if (sign[i] == 'H')
                 {
@@ -444,7 +522,7 @@ namespace IntegralCalculator
             }
 
             //Tanh
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < sign.Length; i++)
             {
                 if (sign[i] == 'I')
                 {
@@ -457,7 +535,7 @@ namespace IntegralCalculator
             }
 
             //Sqrt
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < sign.Length; i++)
             {
                 if (sign[i] == 'J')
                 {
@@ -470,7 +548,7 @@ namespace IntegralCalculator
             }
 
             //Log
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < sign.Length; i++)
             {
                 if (sign[i] == 'K')
                 {
@@ -493,7 +571,7 @@ namespace IntegralCalculator
             }
 
             //ln
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < sign.Length; i++)
             {
                 if (sign[i] == 'L')
                 {
@@ -506,7 +584,7 @@ namespace IntegralCalculator
             }
 
             //팩토리얼
-            for (int i = 1; i < len; i++)
+            for (int i = 1; i < sign.Length; i++)
             {
                 if (sign[i] == '!')
                 {
@@ -521,7 +599,7 @@ namespace IntegralCalculator
             }
 
             //거듭제곱
-            for (int i = 1; i < len; i = i + 2)
+            for (int i = 1; i < sign.Length; i = i + 2)
             {
                 if (sign[i] == '^')
                 {
@@ -537,7 +615,7 @@ namespace IntegralCalculator
             }
 
             //곱하기, 나누기
-            for (int i = 1; i < len; i = i + 2)
+            for (int i = 1; i < sign.Length; i = i + 2)
             {
                 if (sign[i] == '*')
                 {
@@ -595,9 +673,17 @@ namespace IntegralCalculator
             }
 
             //결과
-            input = input.Remove(a,b-a+1);
-            input = input.Insert(a,num[0].ToString());
-            //Console.WriteLine("input = {0}", input);
+            number[a] = num[0];
+            operate[a] = ' ';
+            isNumG[a] = true;
+            for (int i = b + 1; i < number.Length; i++)
+            {
+                number[i - n] = number[i];
+                operate[i - n] = operate[i];
+                isNumG[i - n] = isNumG[i];
+                isNumG[i] = false;
+            }
+            //TestPrint(operate, number, isNumG);
         }
         static private double[] NumIdentfy(int n)
         {
@@ -853,7 +939,7 @@ namespace IntegralCalculator
             char[] result = sign;
             for (short k = 0; k < times; k++)
             {
-                for (int j = i + 1; j < len; j++)
+                for (int j = i + 1; j < result.Length; j++)
                 {
                     result[j - 1] = result[j];
                     result[j] = ' ';
@@ -866,7 +952,7 @@ namespace IntegralCalculator
             double[] result = num;
             for (short k = 0; k < times; k++)
             {
-                for (int j = i + 1; j < len*1; j++)
+                for (int j = i + 1; j < result.Length; j++)
                 {
                     result[j - 1] = result[j];
                     result[j] = 0;
@@ -879,13 +965,28 @@ namespace IntegralCalculator
             bool[] result = isNum;
             for (short k = 0; k < times; k++)
             {
-                for (int j = i + 1; j < len+1; j++)
+                for (int j = i + 1; j < result.Length; j++)
                 {
                     result[j - 1] = result[j];
                     result[j] = false;
                 }
             }
             return result;
+        }
+        static private void Rearrange(int[,] arr, int i)
+        {
+            for (int j = i + 1; j < arr.GetLength(1); j++)
+            {
+                arr[0, j - 1] = arr[0, j];
+                if (arr[0, j] == int.MaxValue)
+                    break;
+            }
+            for (int j = 1; j < arr.GetLength(1); j++)
+            {
+                arr[1, j - 1] = arr[1, j];
+                if (arr[1, j] == -1)
+                    return;
+            }
         }
         static private bool MultiplyMissed(int p, string s)
         {
@@ -894,7 +995,9 @@ namespace IntegralCalculator
             {
                 for (int i = p - 1; i >= 0; i--)
                 {
-                    if (input[i] == '(' || input[i] == '[')
+                    if (input[i] == '(')
+                        return false;
+                    else if (input[i] > 64 && input[i] < 63 + func.Length)
                         return false;
                     else
                     {
@@ -914,7 +1017,7 @@ namespace IntegralCalculator
             {
                 for (int i = p + 1; i < input.Length; i++)
                 {
-                    if (input[i] == ')' || input[i] == ']')
+                    if (input[i] == ')')
                         return false;
                     else
                     {
