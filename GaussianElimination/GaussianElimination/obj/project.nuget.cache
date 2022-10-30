@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TAFUbW/6BoMq/yOs/hodDRX17OBAv5e2x9rOfoTnTVH45j1MLYOrW5Os2KnVP1Dk+6gBH/BuMpXp1ElfN427Aw==",
+  "dgSpecHash": "VDnNS3+/tX52jJP5LkE2Y19aB3fn8DTvpiL/iJUR2K/UgMiYJCcQhjgrtqEkUX14kyYbo2AMfydm2bOK6NvmLg==",
   "success": true,
-  "projectFilePath": "C:\\GitHub\\PracticingC-\\GaussianElimination\\GaussianElimination\\GaussianElimination.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\notye\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.15\\microsoft.netcore.app.host.win-x64.5.0.15.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\GitHub\\PracticingCSharp\\GaussianElimination\\GaussianElimination\\GaussianElimination.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

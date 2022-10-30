@@ -23,10 +23,10 @@ namespace GaussianElimination
         }
         private static void GaussianSequance(short p)
         {
-            float[,] a = new float[p+1,p];
-            float[,] b = new float[p+1,p];
-            float[] s = new float[p];
-            float t = 0;
+            double[,] a = new double[p+1,p];
+            double[,] b = new double[p+1,p];
+            double[] s = new double[p];
+            double t = 0;
 
             //입력 예시
             Console.Write("\n입력할 식:\n");
@@ -46,11 +46,11 @@ namespace GaussianElimination
                 {
                     Console.Write(" x{0} 입력: ", j + 1);
                     input = Console.ReadLine();
-                    a[j,i] = float.Parse(input);
+                    a[j,i] = double.Parse(input);
                 }
                 Console.Write(" 상수{0} 입력: ", i+1);
                 input = Console.ReadLine();
-                a[p, i] = float.Parse(input);
+                a[p, i] = double.Parse(input);
             }
 
             //입력한 식
@@ -93,9 +93,9 @@ namespace GaussianElimination
             //결과
             for (int i = 0; i < p; i++)
             {
-                if (float.IsNaN(s[i]))
+                if (double.IsNaN(s[i]))
                     t = 0;
-                else if (float.IsInfinity(s[i]))
+                else if (double.IsInfinity(s[i]))
                     t= 1;
             }
             Console.Write("\n결과:\n");

@@ -332,7 +332,7 @@ namespace IntegralCalculator
             number = new double[index];
             operate = new char[index];
             isNumG = new bool[index];
-            for (int i = 0; i < index; i++)
+            for (short i = 0; i < index; i++)
             {
                 number[i] = num[i];
                 operate[i] = sign[i];
@@ -341,18 +341,18 @@ namespace IntegralCalculator
             if (ocIndex[0] > -1)
             {
                 opcl = new int[2, ocIndex[0] + 1];
-                for (int i = 0; i < 2; i++)
+                for (short i = 0; i < 2; i++)
                 {
-                    for (int j = 0; j < ocIndex[0]; j++)
+                    for (short j = 0; j < ocIndex[0]; j++)
                         opcl[i, j] = oc[i, j];
                 }
                 opcl[0, ocIndex[0]] = int.MaxValue;
-                opcl[1, ocIndex[0]] = -1;
+                opcl[1, ocIndex[1]] = -1;
             }
             else
                 opcl = new int[2, 1] { { -1 }, { -1 } };
-            //TestPrint(operate, number, isNumG);
-            //TestPrint2(opcl);
+            TestPrint(operate, number, isNumG);
+            TestPrint2(opcl);
         }
         static private void OpenClose()
         {
@@ -363,8 +363,8 @@ namespace IntegralCalculator
                 for (int j = 0; j < arr.GetLength(1); j++)
                     arr[i, j] = opcl[i, j];
             }
-            //TestPrint2(index);
-            for (short i = 0; i < arr.Length; i++)
+            //TestPrint2(arr);
+            for (short i = 0; i < arr.GetLength(1); i++)
             {
                 if (arr[0, i] > arr[1, 0])
                 {
@@ -1131,6 +1131,7 @@ namespace IntegralCalculator
         }
         static private void TestPrint(char[] sign, double[] num, bool[] isNum)
         {
+            Console.Write("\n");
             for (short i = 0; i < sign.Length; i++)
                 Console.Write("{0,2} ", sign[i]);
             Console.Write("\n");
@@ -1144,17 +1145,18 @@ namespace IntegralCalculator
                 else
                     Console.Write("{0,2} ", "F");
             }
-            Console.Write("\n");
+            Console.Write("\n\n");
         }
         static private void TestPrint2(int[,] index)
         {
+            Console.Write("\n");
             for (short j = 0; j < index.GetLength(0); j++)
             {
                 for (short k = 0; k < index.GetLength(1); k++)
                     Console.Write("{0,2} ", index[j, k]);
-                Console.Write("\n\n");
+                Console.Write("\n");
             }
-            Console.Write("\n\n\n");
+            Console.Write("\n\n");
         }
     }
 }

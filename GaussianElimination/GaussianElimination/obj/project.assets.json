@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\GitHub\\PracticingC-\\GaussianElimination\\GaussianElimination\\GaussianElimination.csproj",
+      "projectUniqueName": "C:\\GitHub\\PracticingCSharp\\GaussianElimination\\GaussianElimination\\GaussianElimination.csproj",
       "projectName": "GaussianElimination",
-      "projectPath": "C:\\GitHub\\PracticingC-\\GaussianElimination\\GaussianElimination\\GaussianElimination.csproj",
+      "projectPath": "C:\\GitHub\\PracticingCSharp\\GaussianElimination\\GaussianElimination\\GaussianElimination.csproj",
       "packagesPath": "C:\\Users\\notye\\.nuget\\packages\\",
-      "outputPath": "C:\\GitHub\\PracticingC-\\GaussianElimination\\GaussianElimination\\obj\\",
+      "outputPath": "C:\\GitHub\\PracticingCSharp\\GaussianElimination\\GaussianElimination\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\notye\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -51,22 +51,17 @@
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[5.0.15, 5.0.15]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }
